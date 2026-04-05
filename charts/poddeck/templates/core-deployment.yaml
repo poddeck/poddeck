@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "poddeck.fullname" . }}-core
+  labels:
+    {{- include "poddeck.labels" . | nindent 4 }}
+    app.kubernetes.io/component: core
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: poddeck
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      app.kubernetes.io/component: core
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: poddeck
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/component: core
+    spec:
+      containers:
+        - name: core
+          image: {{ include "poddeck.coreImage" . }}
+          imagePullPolicy: {{ .Values.core.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.core.apiPort }}
+            - name: grpc
+              containerPort: {{ .Values.core.grpcPort }}
+          env:
+            - name: DB_HOST
+              value: {{ include "poddeck.dbHost" . | quote }}
+            - name: DB_PORT
+              value: {{ include "poddeck.dbPort" . | quote }}
+            - name: DB_DATABASE
+              value: {{ include "poddeck.dbName" . | quote }}
+            - name: DB_USERNAME
+              value: {{ include "poddeck.dbUser" . | quote }}
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "poddeck.fullname" . }}-core
+                  key: db-password
+            - name: AUTH_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "poddeck.fullname" . }}-core
+                  key: auth-key
+            - name: REFRESH_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "poddeck.fullname" . }}-core
+                  key: refresh-key
+            - name: API_PORT
+              value: {{ .Values.core.apiPort | quote }}
+            - name: GRPC_PORT
+              value: {{ .Values.core.grpcPort | quote }}
+            {{- if .Values.core.allowedOrigins }}
+            - name: ALLOWED_ORIGINS
+              value: {{ .Values.core.allowedOrigins | quote }}
+            {{- else if .Values.ingress.enabled }}
+            - name: ALLOWED_ORIGINS
+              value: "https://{{ .Values.ingress.host }}"
+            {{- end }}
+          resources:
+            {{- toYaml .Values.core.resources | nindent 12 }}

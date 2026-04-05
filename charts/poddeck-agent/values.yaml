@@ -1,0 +1,38 @@
+image:
+  repository: ghcr.io/poddeck/poddeck-agent
+  tag: ""  # defaults to appVersion
+  pullPolicy: IfNotPresent
+
+# REQUIRED: gRPC endpoint of the PodDeck control plane
+core:
+  hostname: ""
+  port: 10101
+
+# REQUIRED: cluster ID and agent key from PodDeck UI
+cluster:
+  id: ""
+  key: ""
+
+telegraf:
+  enabled: true
+  namespace: monitoring
+  port: 9273
+
+metric:
+  intervalSeconds: 1
+
+hostNetwork: false
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 512Mi
+  limits:
+    cpu: "1"
+    memory: 2Gi
+
+helm:
+  cache:
+    size: 1Gi
+  config:
+    size: 100Mi

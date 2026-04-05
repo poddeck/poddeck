@@ -1,0 +1,25 @@
+# =============================================================================
+# PodDeck Agent — Helm Values
+# Usage:
+#   helm repo add poddeck https://poddeck.github.io/poddeck-charts
+#   helm install poddeck-agent poddeck/poddeck-agent -f values-agent.yaml
+#
+# The cluster.id and cluster.key values are provided by the PodDeck UI
+# after creating a cluster.
+# =============================================================================
+
+# REQUIRED: gRPC endpoint of the PodDeck control plane
+core:
+  hostname: ""
+  port: 10101
+
+# REQUIRED: cluster credentials from the PodDeck UI
+cluster:
+  id: ""
+  key: ""
+
+telegraf:
+  enabled: true
+
+# Set to true if your cluster requires host networking for the agent
+hostNetwork: false
