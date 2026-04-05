@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "poddeck-agent.fullname" . }}
+  labels:
+    {{- include "poddeck-agent.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "poddeck-agent.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "poddeck-agent.selectorLabels" . | nindent 8 }}
+    spec:
+      serviceAccountName: {{ include "poddeck-agent.fullname" . }}
+      {{- if .Values.hostNetwork }}
+      hostNetwork: true
+      {{- end }}
+      containers:
+        - name: agent
+          image: {{ include "poddeck-agent.image" . }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: CORE_HOSTNAME
+              value: {{ required "core.hostname is required" .Values.core.hostname | quote }}
+            - name: CORE_PORT
+              value: {{ .Values.core.port | quote }}
+            - name: CLUSTER_NAME
+              value: {{ required "cluster.id is required" .Values.cluster.id | quote }}
+            - name: CLUSTER_KEY
+              value: {{ required "cluster.key is required" .Values.cluster.key | quote }}
+            - name: TELEGRAF_NAMESPACE
+              value: {{ .Values.telegraf.namespace | quote }}
+            - name: TELEGRAF_PORT
+              value: {{ .Values.telegraf.port | quote }}
+            - name: METRIC_INTERVAL
+              value: {{ .Values.metric.intervalSeconds | quote }}
+            - name: HELM_REPOSITORY_CACHE
+              value: /helm/cache
+            - name: HELM_REPOSITORY_CONFIG
+              value: /helm/config/repositories.yaml
+          volumeMounts:
+            - name: helm-cache
+              mountPath: /helm/cache
+            - name: helm-config
+              mountPath: /helm/config
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+        - name: helm-cache
+          persistentVolumeClaim:
+            claimName: {{ include "poddeck-agent.fullname" . }}-helm-cache
+        - name: helm-config
+          persistentVolumeClaim:
+            claimName: {{ include "poddeck-agent.fullname" . }}-helm-config

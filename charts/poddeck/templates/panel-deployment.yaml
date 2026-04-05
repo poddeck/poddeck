@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "poddeck.fullname" . }}-panel
+  labels:
+    {{- include "poddeck.labels" . | nindent 4 }}
+    app.kubernetes.io/component: panel
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: poddeck
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      app.kubernetes.io/component: panel
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: poddeck
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/component: panel
+    spec:
+      containers:
+        - name: panel
+          image: {{ include "poddeck.panelImage" . }}
+          imagePullPolicy: {{ .Values.panel.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8081
+          env:
+            - name: CORE_URL
+              value: "http://{{ include "poddeck.fullname" . }}-core:{{ .Values.core.apiPort }}"
+          resources:
+            {{- toYaml .Values.panel.resources | nindent 12 }}

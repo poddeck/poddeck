@@ -91,7 +91,7 @@ Best for production deployments on Kubernetes.
 ### Install Control Plane
 
 ```sh
-helm repo add poddeck https://poddeck.github.io/poddeck-charts
+helm repo add poddeck https://poddeck.github.io/poddeck-deployment
 helm repo update
 ```
 

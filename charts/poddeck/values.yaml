@@ -1,0 +1,65 @@
+core:
+  image:
+    repository: ghcr.io/poddeck/poddeck-core
+    tag: ""  # defaults to appVersion
+    pullPolicy: IfNotPresent
+
+  apiPort: 8080
+  grpcPort: 10101
+
+  auth:
+    # REQUIRED: 32-character secrets for JWT signing
+    # If left empty, random keys will be auto-generated
+    authenticationKey: ""
+    refreshKey: ""
+
+  allowedOrigins: ""
+
+  grpcService:
+    type: LoadBalancer
+    port: 10101
+
+  resources:
+    requests:
+      cpu: 200m
+      memory: 512Mi
+    limits:
+      cpu: "1"
+      memory: 1Gi
+
+panel:
+  image:
+    repository: ghcr.io/poddeck/poddeck-panel
+    tag: ""  # defaults to appVersion
+    pullPolicy: IfNotPresent
+
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 200m
+      memory: 128Mi
+
+# Bitnami PostgreSQL subchart
+postgresql:
+  enabled: true
+  auth:
+    database: poddeck
+    username: poddeck
+    password: ""  # REQUIRED if postgresql.enabled
+
+# External database (used when postgresql.enabled is false)
+externalDatabase:
+  host: ""
+  port: 5432
+  database: poddeck
+  username: ""
+  password: ""
+
+ingress:
+  enabled: false
+  className: ""
+  host: poddeck.example.com
+  annotations: {}
+  tls: []
