@@ -44,7 +44,8 @@ Best for VMs, bare metal, or local testing.
 ### Quick Start
 
 ```sh
-cd docker
+git clone https://github.com/poddeck/poddeck-deployment.git
+cd poddeck-deployment/docker
 cp .env.example .env
 ```
 
