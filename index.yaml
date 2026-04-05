@@ -1,0 +1,32 @@
+apiVersion: v1
+entries:
+  poddeck:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2026-04-05T15:20:37.359841659Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: ~16.4
+    description: PodDeck - Kubernetes Management Dashboard (Control Plane)
+    digest: 9184cfe624e617280b8aaa34e2dade143acb7bc62c2232bb17d615961e0cecc3
+    icon: https://raw.githubusercontent.com/poddeck/poddeck-deployment/main/assets/icon.png
+    name: poddeck
+    type: application
+    urls:
+    - https://github.com/poddeck/poddeck-deployment/releases/download/poddeck-0.2.0/poddeck-0.2.0.tgz
+    version: 0.2.0
+  poddeck-agent:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2026-04-05T15:20:37.47545353Z"
+    description: PodDeck Agent - deployed into each managed Kubernetes cluster
+    digest: 2eaadb2250a5ab91f36bd3c86135f1f5e4ba216377a1e72e9c80421a6860312f
+    icon: https://raw.githubusercontent.com/poddeck/poddeck-deployment/main/assets/icon.png
+    name: poddeck-agent
+    type: application
+    urls:
+    - https://github.com/poddeck/poddeck-deployment/releases/download/poddeck-agent-0.2.0/poddeck-agent-0.2.0.tgz
+    version: 0.2.0
+generated: "2026-04-05T15:20:37.47545863Z"
