@@ -1,0 +1,53 @@
+# =============================================================================
+# PodDeck Control Plane — Helm Values
+# Usage:
+#   helm repo add poddeck https://poddeck.github.io/poddeck-charts
+#   helm install poddeck poddeck/poddeck -f values-control-plane.yaml
+# =============================================================================
+
+core:
+  image:
+    repository: ghcr.io/poddeck/poddeck-core
+    # tag: ""  # defaults to chart appVersion
+
+  # JWT secrets (auto-generated if left empty)
+  auth:
+    authenticationKey: ""
+    refreshKey: ""
+
+  # The hostname agents will use to connect via gRPC.
+  # Must be reachable from your managed Kubernetes clusters.
+  grpcHost: ""
+
+  grpcService:
+    type: LoadBalancer
+    port: 10101
+
+panel:
+  image:
+    repository: ghcr.io/poddeck/poddeck-panel
+
+# Bundled PostgreSQL (disable to use your own)
+postgresql:
+  enabled: true
+  auth:
+    database: poddeck
+    username: poddeck
+    password: ""  # REQUIRED: set a strong password
+
+# External database (used when postgresql.enabled is false)
+# externalDatabase:
+#   host: ""
+#   port: 5432
+#   database: poddeck
+#   username: ""
+#   password: ""
+
+ingress:
+  enabled: false
+  className: ""
+  host: poddeck.example.com
+  # tls:
+  #   - secretName: poddeck-tls
+  #     hosts:
+  #       - poddeck.example.com
