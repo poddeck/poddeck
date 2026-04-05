@@ -4,23 +4,31 @@ Deploy [PodDeck](https://github.com/poddeck) — a multi-cluster Kubernetes mana
 
 ## Architecture
 
-```
-┌─────────────────────────────────────────────────┐
-│  Control Plane (deployed once)                  │
-│  ┌──────────┐  ┌──────────┐  ┌──────────────┐  │
-│  │  Panel    │→ │  Core    │──│  PostgreSQL  │  │
-│  │  :80      │  │ :8080 API│  │              │  │
-│  │           │  │ :10101   │  │              │  │
-│  └──────────┘  │  gRPC    │  └──────────────┘  │
-│                └──────────┘                     │
-└───────────────────┬─────────────────────────────┘
-                    │ gRPC :10101
-    ┌───────────────┼───────────────┐
-    ▼               ▼               ▼
-┌─────────┐   ┌─────────┐   ┌─────────┐
-│ Agent   │   │ Agent   │   │ Agent   │
-│Cluster A│   │Cluster B│   │Cluster C│
-└─────────┘   └─────────┘   └─────────┘
+```mermaid
+graph TD
+    subgraph Control Plane
+        Panel["Panel\n:80"]
+        Core["Core\n:8080 REST\n:10101 gRPC"]
+        DB["PostgreSQL"]
+        Panel -->|reverse proxy| Core
+        Core --- DB
+    end
+
+    Core -->|gRPC :10101| AgentA
+    Core -->|gRPC :10101| AgentB
+    Core -->|gRPC :10101| AgentC
+
+    subgraph Cluster A
+        AgentA["Agent"]
+    end
+
+    subgraph Cluster B
+        AgentB["Agent"]
+    end
+
+    subgraph Cluster C
+        AgentC["Agent"]
+    end
 ```
 
 **Control Plane** — Core API + Panel UI + PostgreSQL. Deploy once on a VM or Kubernetes cluster.
