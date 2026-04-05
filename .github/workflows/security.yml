@@ -1,0 +1,32 @@
+name: Security
+
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: "0 8 * * 1"  # Weekly on Monday
+
+jobs:
+  scan-docker-compose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Scan docker-compose for misconfigurations
+        uses: aquasecurity/trivy-action@0.35.0
+        with:
+          scan-type: config
+          scan-ref: docker/
+          severity: HIGH,CRITICAL
+
+  scan-helm-charts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Scan Helm charts for misconfigurations
+        uses: aquasecurity/trivy-action@0.35.0
+        with:
+          scan-type: config
+          scan-ref: charts/
+          severity: HIGH,CRITICAL
