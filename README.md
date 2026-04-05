@@ -68,13 +68,13 @@ Start the control plane:
 docker compose up -d
 ```
 
-PodDeck is now accessible at `http://localhost` (or the port configured in `PANEL_PORT`).
+PodDeck is now accessible at `http://localhost:8081` (or the port configured in `PANEL_PORT`).
 
 ### Ports
 
 | Port | Service | Purpose |
 |------|---------|---------|
-| 80 | Panel | Web UI |
+| 8081 | Panel | Web UI |
 | 10101 | Core (gRPC) | Agent connections — must be reachable from managed clusters |
 
 ---
@@ -157,7 +157,7 @@ The gRPC port (default `10101`) on the control plane **must be reachable** from 
 | `REFRESH_KEY` | Yes | — | JWT refresh key (32 hex chars) |
 | `GRPC_HOST` | Yes | `localhost` | Hostname for agent connections |
 | `GRPC_PORT` | No | `10101` | gRPC port |
-| `PANEL_PORT` | No | `80` | Panel web UI port |
+| `PANEL_PORT` | No | `8081` | Panel web UI port |
 | `ALLOWED_ORIGINS` | No | `http://localhost` | CORS origins |
 | `DB_USERNAME` | No | `poddeck` | PostgreSQL username |
 | `DB_DATABASE` | No | `poddeck` | PostgreSQL database name |
