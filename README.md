@@ -7,7 +7,7 @@ Deploy [PodDeck](https://github.com/poddeck) — a multi-cluster Kubernetes mana
 ```mermaid
 graph TD
     subgraph Control Plane
-        Panel["Panel\n:80"]
+        Panel["Panel\n:8081"]
         Core["Core\n:8080 REST\n:10101 gRPC"]
         DB["PostgreSQL"]
         Panel -->|reverse proxy| Core
