@@ -41,6 +41,16 @@ spec:
               value: /helm/cache
             - name: HELM_REPOSITORY_CONFIG
               value: /helm/config/repositories.yaml
+          livenessProbe:
+            exec:
+              command: ["pgrep", "-f", "java.*agent.jar"]
+            initialDelaySeconds: 15
+            periodSeconds: 30
+          readinessProbe:
+            exec:
+              command: ["pgrep", "-f", "java.*agent.jar"]
+            initialDelaySeconds: 10
+            periodSeconds: 10
           volumeMounts:
             - name: helm-cache
               mountPath: /helm/cache
