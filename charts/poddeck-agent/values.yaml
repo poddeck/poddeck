@@ -30,9 +30,3 @@ resources:
   limits:
     cpu: "1"
     memory: 2Gi
-
-helm:
-  cache:
-    size: 1Gi
-  config:
-    size: 100Mi

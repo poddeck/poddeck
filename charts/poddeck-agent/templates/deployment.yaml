@@ -60,8 +60,6 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
       volumes:
         - name: helm-cache
-          persistentVolumeClaim:
-            claimName: {{ include "poddeck-agent.fullname" . }}-helm-cache
+          emptyDir: {}
         - name: helm-config
-          persistentVolumeClaim:
-            claimName: {{ include "poddeck-agent.fullname" . }}-helm-config
+          emptyDir: {}
