@@ -69,6 +69,12 @@ Start the control plane:
 docker compose up -d
 ```
 
+Create your first user:
+
+```sh
+./create-user.sh
+```
+
 PodDeck is now accessible at `http://localhost:8081` (or the port configured in `PANEL_PORT`).
 
 ### Ports
