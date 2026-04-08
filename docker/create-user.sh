@@ -43,8 +43,8 @@ HASH=$(docker run --rm -e USER_PASSWORD="$PASSWORD" python:3-alpine sh -c '
 pip install -q argon2-cffi 2>/dev/null
 python3 -c "
 import os
-from argon2 import PasswordHasher
-ph = PasswordHasher(time_cost=3, memory_cost=65536, parallelism=1)
+from argon2 import PasswordHasher, Type
+ph = PasswordHasher(time_cost=3, memory_cost=65536, parallelism=1, type=Type.I)
 print(ph.hash(os.environ[\"USER_PASSWORD\"]))
 "')
 
