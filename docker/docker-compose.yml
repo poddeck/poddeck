@@ -28,6 +28,9 @@ services:
       ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost}
     ports:
       - "${GRPC_PORT:-10101}:10101"
+    # Optional: mount GeoLite2 database for session geo-location
+    # volumes:
+    #   - ./geo/GeoLite2-City.mmdb:/app/geo/GeoLite2-City.mmdb:ro
     depends_on:
       postgres:
         condition: service_healthy

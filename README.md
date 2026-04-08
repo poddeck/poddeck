@@ -137,6 +137,27 @@ The `cluster.id` and `cluster.key` are provided by the PodDeck UI when you creat
 
 ---
 
+## GeoIP (Optional)
+
+PodDeck can resolve login sessions to geographic locations using the [MaxMind GeoLite2](https://dev.maxmind.com/geoip/geolite2-free-geolocation-data) database. This is fully optional — without it, sessions will simply have empty country/city fields.
+
+### Docker Compose
+
+1. Download `GeoLite2-City.mmdb` from [MaxMind](https://www.maxmind.com/en/geolite2/signup) (free account required)
+2. Place it at `docker/geo/GeoLite2-City.mmdb`
+3. Uncomment the volume mount in `docker-compose.yml`:
+
+```yaml
+volumes:
+  - ./geo/GeoLite2-City.mmdb:/app/geo/GeoLite2-City.mmdb:ro
+```
+
+### Helm
+
+Mount the database file into the core pod at `/app/geo/GeoLite2-City.mmdb` using a ConfigMap, Secret, or PersistentVolume.
+
+---
+
 ## Network Requirements
 
 The gRPC port (default `10101`) on the control plane **must be reachable** from every managed Kubernetes cluster. Ensure:
