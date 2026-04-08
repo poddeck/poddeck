@@ -1,6 +1,6 @@
 image:
   repository: ghcr.io/poddeck/poddeck-agent
-  tag: ""  # defaults to appVersion
+  tag: "latest"
   pullPolicy: IfNotPresent
 
 # REQUIRED: gRPC endpoint of the PodDeck control plane

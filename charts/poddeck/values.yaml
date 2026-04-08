@@ -1,7 +1,7 @@
 core:
   image:
     repository: ghcr.io/poddeck/poddeck-core
-    tag: ""  # defaults to appVersion
+    tag: "latest"
     pullPolicy: IfNotPresent
 
   apiPort: 8080
@@ -30,7 +30,7 @@ core:
 panel:
   image:
     repository: ghcr.io/poddeck/poddeck-panel
-    tag: ""  # defaults to appVersion
+    tag: "latest"
     pullPolicy: IfNotPresent
 
   resources:
