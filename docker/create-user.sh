@@ -62,6 +62,6 @@ ESCAPED_EMAIL=$(printf '%s' "$EMAIL" | sed "s/'/''/g")
 
 docker compose exec -e PGPASSWORD="$DB_PASSWORD" postgres \
   psql -U "$DB_USERNAME" -d "$DB_DATABASE" -c \
-  "INSERT INTO member (id, name, email, password, language, joined_at) VALUES ('$ID', '$ESCAPED_NAME', '$ESCAPED_EMAIL', '$ESCAPED_HASH', 'en_US', $NOW);"
+  "INSERT INTO member (id, name, email, password, language, joined_at) VALUES ('$ID', '$ESCAPED_NAME', '$ESCAPED_EMAIL', '$ESCAPED_HASH', 'en', $NOW);"
 
 echo "User '$NAME' ($EMAIL) created successfully."
